@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const {Client} = require('pg');
 require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT ||4000;
@@ -25,6 +26,7 @@ const client = new Client({
 
 // Middleware for parsing JSON bodies
 app.use(bodyParser.json());
+app.use(cors())
 
 client.connect()
 .then(()=> console.log('connected to postgreSQL'))
@@ -119,4 +121,4 @@ app.delete('/api/movies/:id', async(req,res)=> {
 
  app.listen(PORT,()=>{
     console.log(`server running on http://localhost:${PORT}`);
- })
+ });
