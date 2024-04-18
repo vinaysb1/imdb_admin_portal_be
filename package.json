@@ -1,0 +1,12 @@
+{
+  "name": "imdb_admin_portal_be",
+  "version": "1.0.0",
+  "description": "imdb clone app admin portal backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
