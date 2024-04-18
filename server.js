@@ -41,12 +41,39 @@ app.post('/api/movies',async(req,res)=> {
         const values = [title, description, release_date, genre, poster_url];
         const result = await client.query(query,values);
         // Return the inserted movie details as the response
-        res.status(201).json({sucsess: false,movie:result.rows[0]})
+        res.status(201).json({sucsess: true,movie:result.rows[0]})
     }catch (error) {
         console.error('error storing movie details:',error);
         res.status(500).json({sucess:false,error:'internal server error'})
     }
 });
+app.get('/api/movies',async(req,res) =>{
+    try{
+        const query = 'select * from movies';
+        const result = await client.query(query);
+        const movies = result.rows;
+        res.status(200).json({success:true,movies})
+    }catch (error) {
+        console.error('error fetching movie:',error);
+        res.status(500).json({success:false,error:'Internal server error'})
+    }
+});
+// GET endpoint to fetch a movie by ID
+app.get('/api/movies/:id', async (req,res) => {
+    const movieId = req.params.id;
+    try{
+        const query = 'select * from movies WHERE id = $1';
+        const result = await client.query(query,[movieId]);
+
+        if(result.rows.length === 0) {
+            return res.status(404).json({sucess:false,error:'movie not found'})
+        }
+        res.status(200).json({success:true,movie:result.rows[0]});
+    }catch (error) {
+        console.error('error fetching movie id :',error);
+        res.status(500).json({success:false,error:'internal server error'})
+    }
+})
  app.listen(PORT,()=>{
     console.log(`server running on http://localhost:${PORT}`);
  })
